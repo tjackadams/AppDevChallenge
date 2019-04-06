@@ -1,9 +1,7 @@
 import React, { Component } from "react";
 
-import { Map as LeafletMap, Marker, TileLayer } from "react-leaflet";
+import { Map as LeafletMap, Marker, Popup, TileLayer } from "react-leaflet";
 import L from "leaflet";
-
-import Data from "./pindata";
 
 import "./style.css";
 
@@ -45,33 +43,42 @@ class AlertMap extends Component {
   }
 
   getMapData = () => {
-    window.setTimeout(this.getMapData, 30000);
+    setTimeout(this.getMapData, 30000);
 
-    this.updateMap(Data);
+    this.updateMap(this.props.data.Pins);
   };
 
-  updateMap = pins => {
-    for (let index = 0; index < pins.Pins.length; index++) {
-      const vPin = pins.Pins[index];
-      this.displayPin(vPin);
-    }
+  displayPin = (vDeviceId, vName, vLong, vLat, vText, vStatus, vImage) => {
+    const random = Math.random();
+    const icon = random > 0.8 ? RedIcon : random > 0.5 ? AmberIcon : GreenIcon;
+    return {
+      key: vDeviceId,
+      icon: icon,
+      name: vName,
+      position: [vLat, vLong],
+      text: vText
+    };
   };
 
-  displayPin = pin => {
-    this.setState(
-      {
-        vMapPins: this.state.vMapPins.map(el =>
-          el.id === pin.deviceid ? { ...el, id: pin.deviceid } : el
-        )
-      },
-      console.log("state", this.state.vMapPins)
-    );
+  updateMap = Pins => {
+    let vPins = [];
+    Pins.forEach(pin => {
+      vPins[pin.deviceid] = this.displayPin(
+        pin.deviceid,
+        pin.name,
+        pin.long,
+        pin.lat,
+        pin.text
+      );
+    });
+
+    this.setState({
+      vMapPins: vPins
+    });
   };
 
   render() {
     const position = [this.state.center.lat, this.state.center.lng];
-    const { vMapPins } = this.state;
-    console.log(vMapPins);
     return (
       <LeafletMap
         center={position}
@@ -94,8 +101,15 @@ class AlertMap extends Component {
           crossOrigin={true}
           subscriptionKey="MaBREwDQSRW830sXtzMaRjcaVGVOdmOeogSyKSTcbdc"
         />
-        {vMapPins &&
-          vMapPins.map(vMapPin => <Marker position={vMapPin.position} />)}
+        {this.state.vMapPins.map(pin => {
+          return (
+            <Marker key={pin.key} position={pin.position} icon={pin.icon}>
+              <Popup>
+                {pin.name} <br /> {pin.text}
+              </Popup>
+            </Marker>
+          );
+        })}
       </LeafletMap>
     );
   }
