@@ -907,8 +907,8 @@
   resolved "https://registry.yarnpkg.com/@emotion/weak-memoize/-/weak-memoize-0.2.2.tgz#63985d3d8b02530e0869962f4da09142ee8e200e"
 
 "@microsoft/load-themed-styles@^1.7.13":
-  version "1.8.77"
-  resolved "https://registry.yarnpkg.com/@microsoft/load-themed-styles/-/load-themed-styles-1.8.77.tgz#7134fabf72d9fd44213bff860b67b6fb50d59eff"
+  version "1.8.80"
+  resolved "https://registry.yarnpkg.com/@microsoft/load-themed-styles/-/load-themed-styles-1.8.80.tgz#5148cabef5a63b72f08820026ec02d5ae7c1befc"
 
 "@mrmlnc/readdir-enhanced@^2.2.1":
   version "2.2.1"
@@ -7815,8 +7815,8 @@ obuf@^1.0.0, obuf@^1.1.1:
   resolved "https://registry.yarnpkg.com/obuf/-/obuf-1.1.2.tgz#09bea3343d41859ebd446292d11c9d4db619084e"
 
 office-ui-fabric-react@^6.164.2:
-  version "6.164.2"
-  resolved "https://registry.yarnpkg.com/office-ui-fabric-react/-/office-ui-fabric-react-6.164.2.tgz#29737de92503f0af9a9ea4a24379d7e4e8603094"
+  version "6.164.6"
+  resolved "https://registry.yarnpkg.com/office-ui-fabric-react/-/office-ui-fabric-react-6.164.6.tgz#0fdd06cff35328da04cefcded6fa7af8baee0d8d"
   dependencies:
     "@microsoft/load-themed-styles" "^1.7.13"
     "@uifabric/foundation" "^0.7.4"

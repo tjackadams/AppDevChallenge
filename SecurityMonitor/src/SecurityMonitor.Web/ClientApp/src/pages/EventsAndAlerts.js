@@ -5,10 +5,12 @@ import { AlertMap } from "../components/AlertMap";
 
 import Data from "./pindata";
 
+const subscriptionKey = process.env.REACT_APP_AZUREMAPKEY;
+
 const EventsAndAlerts = () => (
   <Stack>
     <Stack.Item>
-      <AlertMap data={Data} />
+      <AlertMap data={Data} subscriptionKey={subscriptionKey} />
     </Stack.Item>
   </Stack>
 );

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-
+import PropTypes from "prop-types";
 import { Map as LeafletMap, Marker, Popup, TileLayer } from "react-leaflet";
 import L from "leaflet";
 
@@ -99,7 +99,7 @@ class AlertMap extends Component {
           zoomOffset={-1}
           id="azuremaps.road"
           crossOrigin={true}
-          subscriptionKey="MaBREwDQSRW830sXtzMaRjcaVGVOdmOeogSyKSTcbdc"
+          subscriptionKey={this.props.subscriptionKey}
         />
         {this.state.vMapPins.map(pin => {
           return (
@@ -114,5 +114,9 @@ class AlertMap extends Component {
     );
   }
 }
+
+AlertMap.propTypes = {
+  subscriptionKey: PropTypes.string.isRequired
+};
 
 export default AlertMap;
