@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace SecurityMonitor.Core
+namespace SecurityMonitor.Core.Models
 {
     public class DeviceEvent
     {

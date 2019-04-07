@@ -5,7 +5,7 @@ using System.Text;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SecurityMonitor.Core;
-using SecurityMonitor.Core.Device;
+using SecurityMonitor.Core.Models;
 
 namespace SecurityMonitor.Data
 {
@@ -31,26 +31,6 @@ namespace SecurityMonitor.Data
 
                 builder
                     .HasKey(p => p.Id);
-
-                var nav = builder
-                          .Metadata
-                          .FindNavigation(nameof(Device.DeviceEvents));
-
-                nav
-                    .SetPropertyAccessMode(PropertyAccessMode.Field);
-            }
-        }
-
-        private class DeviceEventConfiguration : IEntityTypeConfiguration<DeviceEvent>
-        {
-            public void Configure(EntityTypeBuilder<DeviceEvent> builder)
-            {
-                builder
-                    .ToTable("DeviceEvents");
-
-                builder
-                    .HasKey(p => p.Id);
-
             }
         }
     }

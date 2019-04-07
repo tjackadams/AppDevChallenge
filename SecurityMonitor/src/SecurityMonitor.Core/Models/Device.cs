@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-namespace SecurityMonitor.Core.Device
+namespace SecurityMonitor.Core.Models
 {
     public class Device : IEntity
     {
-        private Device(){}
+        private Device() { }
 
         public static Device New(int id, string name, double lat, double lng)
         {
@@ -29,31 +26,19 @@ namespace SecurityMonitor.Core.Device
         {
             ImageUrl = imageUrl;
 
-            var deviceEvent = _deviceEvents.FirstOrDefault(de => de.Id == eventRaised.Id);
-            if (deviceEvent != null)
+            if (LatestEvent.Id != eventRaised.Id && eventRaised.EventTime > LatestEvent.EventTime)
             {
-                return;
+                LatestEvent = DeviceEvent.New(eventRaised.Id, eventRaised.EventTime, eventRaised.Status);
             }
-
-            _deviceEvents.Add(DeviceEvent.New(eventRaised.Id, eventRaised.EventTime, eventRaised.Status));
         }
 
-        public int Id { get; private set;}
+        public int Id { get; private set; }
 
-        
+
         public string Name { get; private set; }
         public Position Position { get; private set; }
         public string ImageUrl { get; private set; }
-        private readonly HashSet<DeviceEvent> _deviceEvents = new HashSet<DeviceEvent>();
-        public IEnumerable<DeviceEvent> DeviceEvents => _deviceEvents.ToList();
-    }
 
-    public class EventRaised
-    {
-        public Guid Id { get; set; }
-        public Status Status { get; set; }
-        public DateTime EventTime { get; set; }
-        public string Subject { get; set; }
+        public DeviceEvent LatestEvent { get; private set; }
     }
-
 }
