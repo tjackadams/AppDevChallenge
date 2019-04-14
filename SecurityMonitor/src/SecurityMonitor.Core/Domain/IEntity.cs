@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace SecurityMonitor.Core
+namespace SecurityMonitor.Core.Domain
 {
-    public interface IEntity
+    public interface IEntity : IEntity<int>
     {
-        int Id { get; }
+
     }
 }

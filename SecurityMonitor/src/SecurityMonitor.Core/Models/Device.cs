@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SecurityMonitor.Core.Domain;
+using System;
 
 namespace SecurityMonitor.Core.Models
 {
@@ -14,31 +15,16 @@ namespace SecurityMonitor.Core.Models
             {
                 Id = id,
                 Name = name,
-                Position = new Position
-                {
-                    Latitude = lat,
-                    Longitude = lng
-                }
+                Latitude = lat,
+                Longitude = lng
+
             };
         }
 
-        public void NewEvent(string imageUrl, EventRaised eventRaised)
-        {
-            ImageUrl = imageUrl;
-
-            if (LatestEvent.Id != eventRaised.Id && eventRaised.EventTime > LatestEvent.EventTime)
-            {
-                LatestEvent = DeviceEvent.New(eventRaised.Id, eventRaised.EventTime, eventRaised.Status);
-            }
-        }
-
         public int Id { get; private set; }
-
-
         public string Name { get; private set; }
-        public Position Position { get; private set; }
+        public double Latitude { get; private set; }
+        public double Longitude { get; private set; }
         public string ImageUrl { get; private set; }
-
-        public DeviceEvent LatestEvent { get; private set; }
     }
 }

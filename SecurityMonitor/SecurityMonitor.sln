@@ -1,13 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.438
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28803.156
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SecurityMonitor.Web", "src\SecurityMonitor.Web\SecurityMonitor.Web.csproj", "{FB902851-8728-4DEE-9328-C10AD002149B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SecurityMonitor.Core", "src\SecurityMonitor.Core\SecurityMonitor.Core.csproj", "{4C574C88-0C99-43AA-A53F-DDC05D75123C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SecurityMonitor.Core", "src\SecurityMonitor.Core\SecurityMonitor.Core.csproj", "{4C574C88-0C99-43AA-A53F-DDC05D75123C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SecurityMonitor.Data", "src\SecurityMonitor.Data\SecurityMonitor.Data.csproj", "{697B53A2-E385-4E14-AEB9-79A7C81B2AEC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SecurityMonitor.Data", "src\SecurityMonitor.Data\SecurityMonitor.Data.csproj", "{697B53A2-E385-4E14-AEB9-79A7C81B2AEC}"
+EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "SecurityMonitor.Database", "SecurityMonitor.Database\SecurityMonitor.Database.sqlproj", "{8A08CA3D-D155-44CF-B4AC-79093403BEEE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,12 @@ Global
 		{697B53A2-E385-4E14-AEB9-79A7C81B2AEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{697B53A2-E385-4E14-AEB9-79A7C81B2AEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{697B53A2-E385-4E14-AEB9-79A7C81B2AEC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8A08CA3D-D155-44CF-B4AC-79093403BEEE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A08CA3D-D155-44CF-B4AC-79093403BEEE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A08CA3D-D155-44CF-B4AC-79093403BEEE}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{8A08CA3D-D155-44CF-B4AC-79093403BEEE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A08CA3D-D155-44CF-B4AC-79093403BEEE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8A08CA3D-D155-44CF-B4AC-79093403BEEE}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
