@@ -7,7 +7,7 @@ using System.Data;
 
 namespace SecurityMonitor.Data.Repository
 {
-    public class DeviceRepository : BaseRepository
+    public class DeviceRepository : BaseRepository, IDeviceRepository
     {
         public static class StoredProcedures
         {
