@@ -1,0 +1,174 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "app-security-monitor-production-aspName": {
+      "type": "string",
+      "minLength": 1
+    },
+    "app-security-monitor-production-aspSkuName": {
+      "type": "string",
+      "defaultValue": "F1",
+      "allowedValues": [
+        "F1",
+        "D1",
+        "B1",
+        "B2",
+        "B3",
+        "S1",
+        "S2",
+        "S3",
+        "P1",
+        "P2",
+        "P3",
+        "P4"
+      ],
+      "metadata": {
+        "description": "Describes plan's pricing tier and capacity. Check details at https://azure.microsoft.com/en-us/pricing/details/app-service/"
+      }
+    },
+    "sql-productionAdminLogin": {
+      "type": "string",
+      "minLength": 1
+    },
+    "sql-productionAdminLoginPassword": {
+      "type": "securestring"
+    },
+    "db-security-monitor-productionName": {
+      "type": "string",
+      "minLength": 1
+    },
+    "db-security-monitor-productionCollation": {
+      "type": "string",
+      "minLength": 1,
+      "defaultValue": "SQL_Latin1_General_CP1_CI_AS"
+    },
+    "db-security-monitor-productionEdition": {
+      "type": "string",
+      "defaultValue": "Basic",
+      "allowedValues": [
+        "Basic",
+        "Standard",
+        "Premium"
+      ]
+    },
+    "db-security-monitor-productionRequestedServiceObjectiveName": {
+      "type": "string",
+      "defaultValue": "Basic",
+      "allowedValues": [
+        "Basic",
+        "S0",
+        "S1",
+        "S2",
+        "P1",
+        "P2",
+        "P3"
+      ],
+      "metadata": {
+        "description": "Describes the performance level for Edition"
+      }
+    }},
+  "variables": {
+    "app-security-monitor-productionName": "[concat('app-security-monitor-production', uniqueString(resourceGroup().id))]",
+    "sql-productionName": "[concat('sql-production', uniqueString(resourceGroup().id))]"},
+  "resources": [
+    {
+      "name": "[parameters('app-security-monitor-production-aspName')]",
+      "type": "Microsoft.Web/serverfarms",
+      "location": "[resourceGroup().location]",
+      "apiVersion": "2015-08-01",
+      "sku": {
+        "name": "[parameters('app-security-monitor-production-aspSkuName')]"
+      },
+      "dependsOn": [ ],
+      "tags": {
+        "displayName": "app-security-monitor-production-asp"
+      },
+      "properties": {
+        "name": "[parameters('app-security-monitor-production-aspName')]",
+        "numberOfWorkers": 1
+      }
+    },
+    {
+      "name": "[variables('app-security-monitor-productionName')]",
+      "type": "Microsoft.Web/sites",
+      "location": "[resourceGroup().location]",
+      "apiVersion": "2015-08-01",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/serverfarms', parameters('app-security-monitor-production-aspName'))]"
+      ],
+      "tags": {
+        "[concat('hidden-related:', resourceId('Microsoft.Web/serverfarms', parameters('app-security-monitor-production-aspName')))]": "Resource",
+        "displayName": "app-security-monitor-production"
+      },
+      "properties": {
+        "name": "[variables('app-security-monitor-productionName')]",
+        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('app-security-monitor-production-aspName'))]"
+      },
+      "resources": [
+        {
+          "name": "appsettings",
+          "type": "config",
+          "apiVersion": "2015-08-01",
+          "dependsOn": [
+            "[resourceId('Microsoft.Web/sites', variables('app-security-monitor-productionName'))]"
+          ],
+          "tags": {
+            "displayName": "app-security-monitor-production-application-settings"
+          },
+          "properties": {
+            "key1": "value1",
+            "key2": "value2"
+          }
+        }
+      ]
+    },
+    {
+      "name": "[variables('sql-productionName')]",
+      "type": "Microsoft.Sql/servers",
+      "location": "[resourceGroup().location]",
+      "apiVersion": "2014-04-01-preview",
+      "dependsOn": [ ],
+      "tags": {
+        "displayName": "sql-production"
+      },
+      "properties": {
+        "administratorLogin": "[parameters('sql-productionAdminLogin')]",
+        "administratorLoginPassword": "[parameters('sql-productionAdminLoginPassword')]"
+      },
+      "resources": [
+        {
+          "name": "AllowAllWindowsAzureIps",
+          "type": "firewallrules",
+          "location": "[resourceGroup().location]",
+          "apiVersion": "2014-04-01-preview",
+          "dependsOn": [
+            "[resourceId('Microsoft.Sql/servers', variables('sql-productionName'))]"
+          ],
+          "properties": {
+            "startIpAddress": "0.0.0.0",
+            "endIpAddress": "0.0.0.0"
+          }
+        },
+        {
+          "name": "[parameters('db-security-monitor-productionName')]",
+          "type": "databases",
+          "location": "[resourceGroup().location]",
+          "apiVersion": "2014-04-01-preview",
+          "dependsOn": [
+            "[resourceId('Microsoft.Sql/servers', variables('sql-productionName'))]"
+          ],
+          "tags": {
+            "displayName": "db-security-monitor-production"
+          },
+          "properties": {
+            "collation": "[parameters('db-security-monitor-productionCollation')]",
+            "edition": "[parameters('db-security-monitor-productionEdition')]",
+            "maxSizeBytes": "1073741824",
+            "requestedServiceObjectiveName": "[parameters('db-security-monitor-productionRequestedServiceObjectiveName')]"
+          }
+        }
+      ]
+    }],
+  "outputs": {}
+}
