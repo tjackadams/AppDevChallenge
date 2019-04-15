@@ -1,16 +1,12 @@
 import React from "react";
 import { Stack } from "office-ui-fabric-react/lib/Stack";
 
-import { AlertMap } from "../components/AlertMap";
-
-import Data from "./pindata";
-
-const subscriptionKey = process.env.REACT_APP_AZUREMAPKEY;
+import AlarmsContainer from "../containers/AlarmsContainer";
 
 const EventsAndAlerts = () => (
   <Stack>
     <Stack.Item>
-      <AlertMap data={Data} subscriptionKey={subscriptionKey} />
+      <AlarmsContainer />
     </Stack.Item>
   </Stack>
 );

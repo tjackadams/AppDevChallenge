@@ -44,8 +44,7 @@ class AlertMap extends Component {
 
   getMapData = () => {
     setTimeout(this.getMapData, 30000);
-
-    this.updateMap(this.props.data.Pins);
+    this.updateMap(this.props.data);
   };
 
   displayPin = (vDeviceId, vName, vLong, vLat, vText, vStatus, vImage) => {
@@ -63,8 +62,8 @@ class AlertMap extends Component {
   updateMap = Pins => {
     let vPins = [];
     Pins.forEach(pin => {
-      vPins[pin.deviceid] = this.displayPin(
-        pin.deviceid,
+      vPins[pin.deviceId] = this.displayPin(
+        pin.deviceId,
         pin.name,
         pin.long,
         pin.lat,
@@ -102,6 +101,7 @@ class AlertMap extends Component {
           subscriptionKey={this.props.subscriptionKey}
         />
         {this.state.vMapPins.map(pin => {
+          console.log("pin", pin);
           return (
             <Marker key={pin.key} position={pin.position} icon={pin.icon}>
               <Popup>

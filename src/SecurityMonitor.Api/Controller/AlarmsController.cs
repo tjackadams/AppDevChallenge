@@ -2,9 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SecurityMonitor.Api.Models;
 using SecurityMonitor.Core.Models;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 
