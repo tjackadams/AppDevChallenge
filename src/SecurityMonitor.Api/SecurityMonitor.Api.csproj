@@ -16,8 +16,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\src\SecurityMonitor.Core\SecurityMonitor.Core.csproj" />
-    <ProjectReference Include="..\src\SecurityMonitor.Data\SecurityMonitor.Data.csproj" />
+    <ProjectReference Include="..\SecurityMonitor.Core\SecurityMonitor.Core.csproj" />
+    <ProjectReference Include="..\SecurityMonitor.Data\SecurityMonitor.Data.csproj" />
   </ItemGroup>
 
 </Project>
