@@ -2,6 +2,9 @@
   "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    "app-security-monitor-production-connectionString": {
+      "type": "string"
+    },
     "app-security-monitor-production-aspName": {
       "type": "string",
       "minLength": 1
@@ -67,10 +70,12 @@
       "metadata": {
         "description": "Describes the performance level for Edition"
       }
-    }},
+    }
+  },
   "variables": {
     "app-security-monitor-productionName": "[concat('app-security-monitor-production', uniqueString(resourceGroup().id))]",
-    "sql-productionName": "[concat('sql-production', uniqueString(resourceGroup().id))]"},
+    "sql-productionName": "[concat('sql-production', uniqueString(resourceGroup().id))]",
+    "app-security-monitor-api-productionName": "[concat('app-security-monitor-api-production', uniqueString(resourceGroup().id))]"},
   "resources": [
     {
       "name": "[parameters('app-security-monitor-production-aspName')]",
@@ -117,9 +122,14 @@
             "displayName": "app-security-monitor-production-application-settings"
           },
           "properties": {
-            "key1": "value1",
-            "key2": "value2"
-          }
+          },
+          "connectionStrings": [
+            {
+              "name":  "Default",
+              "value": "[parameters('app-security-monitor-production-connectionString')]",
+              "type": "SQLAzure"
+            }
+          ]
         }
       ]
     },
@@ -167,6 +177,47 @@
             "maxSizeBytes": "1073741824",
             "requestedServiceObjectiveName": "[parameters('db-security-monitor-productionRequestedServiceObjectiveName')]"
           }
+        }
+      ]
+    },
+    {
+      "name": "[variables('app-security-monitor-api-productionName')]",
+      "type": "Microsoft.Web/sites",
+      "location": "[resourceGroup().location]",
+      "apiVersion": "2015-08-01",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/serverfarms', parameters('app-security-monitor-production-aspName'))]"
+      ],
+      "tags": {
+        "[concat('hidden-related:', resourceId('Microsoft.Web/serverfarms', parameters('app-security-monitor-production-aspName')))]": "Resource",
+        "displayName": "app-security-monitor-api-production"
+      },
+      "properties": {
+        "name": "[variables('app-security-monitor-api-productionName')]",
+        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('app-security-monitor-production-aspName'))]"
+      },
+      "resources": [
+        {
+          "name": "appsettings",
+          "type": "config",
+          "apiVersion": "2015-08-01",
+          "dependsOn": [
+            "[resourceId('Microsoft.Web/sites', variables('app-security-monitor-api-productionName'))]"
+          ],
+          "tags": {
+            "displayName": "app-security-monitor-api-production-application-settings"
+          },
+          "properties": {
+            "key1": "value1",
+            "key2": "value2"
+          },
+          "connectionStrings": [
+            {
+              "name": "Default",
+              "value": "[parameters('app-security-monitor-production-connectionString')]",
+              "type": "SQLAzure"
+            }
+          ]
         }
       ]
     }],
