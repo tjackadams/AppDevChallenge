@@ -18,7 +18,7 @@ namespace SecurityMonitor.Data.Repository
 
         public static class StoredProcedures
         {
-            public const string GetAllLatest = "usp_GetAllLatestDeviceEvents";
+            public const string GetAllLatest = "usp_GetAllLatestAlarms";
         }
 
         public async Task<IEnumerable<Alarm>> GetAllLatest()

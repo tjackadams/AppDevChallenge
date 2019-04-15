@@ -69,6 +69,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Local.SecurityMonitor.Database.publish.publish.xml" />
+    <None Include="SecurityMonitor.Database.publish.xml" />
+    <None Include="Local.SecurityMonitor.Database.publish.xml" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Scripts.PostDeployment.sql" />
