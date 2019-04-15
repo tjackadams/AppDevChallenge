@@ -68,7 +68,6 @@
     <RefactorLog Include="SecurityMonitor.Database.refactorlog" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Local.SecurityMonitor.Database.publish.publish.xml" />
     <None Include="SecurityMonitor.Database.publish.xml" />
     <None Include="Local.SecurityMonitor.Database.publish.xml" />
   </ItemGroup>
