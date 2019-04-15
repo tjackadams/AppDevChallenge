@@ -3,21 +3,21 @@ AS
 	;WITH SortedDeviceEvents AS
 	(
 		SELECT
-			[DeviceEvents].[Id],
+			[DeviceEvents].[EventId],
 			[DeviceEvents].[DeviceId],
 			[DeviceEvents].[EventTime],
 			[DeviceEvents].[Status],
-			[Devices].[ImageUrl],
+			[DeviceEvents].[ImageUrl],
 			[Devices].[Latitude],
 			[Devices].[Longitude],
 			[Devices].[Name],
-			ROW_NUMBER() OVER (PARTITION BY [DeviceId] ORDER BY [EventTime] DESC) AS RowNumber
+			ROW_NUMBER() OVER (PARTITION BY [DeviceEvents].[DeviceId] ORDER BY [DeviceEvents].[EventTime] DESC) AS RowNumber
 		FROM
 			[DeviceEvents]	
-		INNER JOIN [Devices] ON [DeviceEvents].[DeviceId] = [Devices].[Id]
+		INNER JOIN [Devices] ON [DeviceEvents].[DeviceId] = [Devices].[DeviceId]
 	)
 	SELECT
-		[Id] as [AlarmId],
+		[EventId] as [AlarmId],
 		[DeviceId],
 		[EventTime],
 		[ImageUrl],
