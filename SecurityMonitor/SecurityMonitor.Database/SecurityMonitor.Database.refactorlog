@@ -14,4 +14,18 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="EventTime" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="360cfcb9-25de-4033-9ba2-8d099e88e66c" ChangeDateTime="04/15/2019 10:53:18">
+    <Property Name="ElementName" Value="[dbo].[Devices].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Devices]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="DeviceId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="93ffe4d4-f14e-4c4a-a428-7c671c31ad3d" ChangeDateTime="04/15/2019 11:05:08">
+    <Property Name="ElementName" Value="[dbo].[DeviceEvents].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[DeviceEvents]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="EventId" />
+  </Operation>
 </Operations>

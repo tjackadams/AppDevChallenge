@@ -72,4 +72,7 @@
   <ItemGroup>
     <None Include="Local.SecurityMonitor.Database.publish.publish.xml" />
   </ItemGroup>
+  <ItemGroup>
+    <PostDeploy Include="Scripts.PostDeployment.sql" />
+  </ItemGroup>
 </Project>
