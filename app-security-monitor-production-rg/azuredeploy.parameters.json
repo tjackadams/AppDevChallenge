@@ -2,14 +2,8 @@
   "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "app-security-monitor-production-aspName": {
-      "value": "app-security-monitor-production-asp"
-    },
-    "sql-productionAdminLogin": {
+    "sqlAdministratorLogin": {
       "value": "tjackadams"
-    },
-    "db-security-monitor-productionName": {
-      "value": "db-security-monitor-production"
     }
   }
 }

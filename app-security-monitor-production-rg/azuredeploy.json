@@ -1,15 +1,8 @@
 {
-  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "$schema": "https://schema.management.azure.com/schemas/2018-05-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "app-security-monitor-production-connectionString": {
-      "type": "string"
-    },
-    "app-security-monitor-production-aspName": {
-      "type": "string",
-      "minLength": 1
-    },
-    "app-security-monitor-production-aspSkuName": {
+    "skuName": {
       "type": "string",
       "defaultValue": "F1",
       "allowedValues": [
@@ -27,199 +20,180 @@
         "P4"
       ],
       "metadata": {
-        "description": "Describes plan's pricing tier and capacity. Check details at https://azure.microsoft.com/en-us/pricing/details/app-service/"
+        "description": "Describes plan's pricing tier and instance size. Check details at https://azure.microsoft.com/en-us/pricing/details/app-service/"
       }
     },
-    "sql-productionAdminLogin": {
-      "type": "string",
-      "minLength": 1
-    },
-    "sql-productionAdminLoginPassword": {
-      "type": "securestring"
-    },
-    "db-security-monitor-productionName": {
-      "type": "string",
-      "minLength": 1
-    },
-    "db-security-monitor-productionCollation": {
-      "type": "string",
-      "minLength": 1,
-      "defaultValue": "SQL_Latin1_General_CP1_CI_AS"
-    },
-    "db-security-monitor-productionEdition": {
-      "type": "string",
-      "defaultValue": "Basic",
-      "allowedValues": [
-        "Basic",
-        "Standard",
-        "Premium"
-      ]
-    },
-    "db-security-monitor-productionRequestedServiceObjectiveName": {
-      "type": "string",
-      "defaultValue": "Basic",
-      "allowedValues": [
-        "Basic",
-        "S0",
-        "S1",
-        "S2",
-        "P1",
-        "P2",
-        "P3"
-      ],
+    "skuCapacity": {
+      "type": "int",
+      "defaultValue": 1,
+      "minValue": 1,
       "metadata": {
-        "description": "Describes the performance level for Edition"
+        "description": "Describes plan's instance count"
+      }
+    },
+    "sqlAdministratorLogin": {
+      "type": "string",
+      "metadata": {
+        "description": "The admin user of the SQL Server"
+      }
+    },
+    "sqlAdministratorLoginPassword": {
+      "type": "securestring",
+      "metadata": {
+        "description": "The password of the admin user of the SQL Server"
       }
     }
   },
   "variables": {
-    "app-security-monitor-productionName": "[concat('app-security-monitor-production', uniqueString(resourceGroup().id))]",
-    "sql-productionName": "[concat('sql-production', uniqueString(resourceGroup().id))]",
-    "app-security-monitor-api-productionName": "[concat('app-security-monitor-api-production', uniqueString(resourceGroup().id))]"},
+    "hostingPlanName": "[concat('security-monitor-production-asp-', uniqueString(resourceGroup().id))]",
+    "webSiteName": "[concat('web-security-monitor-production-', uniqueString(resourceGroup().id))]",
+    "apiSiteName": "[concat('api-security-monitor-production-', uniqueString(resourceGroup().id))]",
+    "sqlserverName": "[concat('sql-security-monitor-production-', uniqueString(resourceGroup().id))]",
+    "databaseName": "[concat('db-security-monitor-production-', uniqueString(resourceGroup().id))]"
+  },
   "resources": [
     {
-      "name": "[parameters('app-security-monitor-production-aspName')]",
-      "type": "Microsoft.Web/serverfarms",
-      "location": "[resourceGroup().location]",
-      "apiVersion": "2015-08-01",
-      "sku": {
-        "name": "[parameters('app-security-monitor-production-aspSkuName')]"
-      },
-      "dependsOn": [ ],
-      "tags": {
-        "displayName": "app-security-monitor-production-asp"
-      },
-      "properties": {
-        "name": "[parameters('app-security-monitor-production-aspName')]",
-        "numberOfWorkers": 1
-      }
-    },
-    {
-      "name": "[variables('app-security-monitor-productionName')]",
-      "type": "Microsoft.Web/sites",
-      "location": "[resourceGroup().location]",
-      "apiVersion": "2015-08-01",
-      "dependsOn": [
-        "[resourceId('Microsoft.Web/serverfarms', parameters('app-security-monitor-production-aspName'))]"
-      ],
-      "tags": {
-        "[concat('hidden-related:', resourceId('Microsoft.Web/serverfarms', parameters('app-security-monitor-production-aspName')))]": "Resource",
-        "displayName": "app-security-monitor-production"
-      },
-      "properties": {
-        "name": "[variables('app-security-monitor-productionName')]",
-        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('app-security-monitor-production-aspName'))]"
-      },
-      "resources": [
-        {
-          "name": "appsettings",
-          "type": "config",
-          "apiVersion": "2015-08-01",
-          "dependsOn": [
-            "[resourceId('Microsoft.Web/sites', variables('app-security-monitor-productionName'))]"
-          ],
-          "tags": {
-            "displayName": "app-security-monitor-production-application-settings"
-          },
-          "properties": {
-          },
-          "connectionStrings": [
-            {
-              "name":  "Default",
-              "value": "[parameters('app-security-monitor-production-connectionString')]",
-              "type": "SQLAzure"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "name": "[variables('sql-productionName')]",
+      "name": "[variables('sqlserverName')]",
       "type": "Microsoft.Sql/servers",
       "location": "[resourceGroup().location]",
       "apiVersion": "2014-04-01-preview",
-      "dependsOn": [ ],
+      "dependsOn": [],
       "tags": {
         "displayName": "sql-production"
       },
       "properties": {
-        "administratorLogin": "[parameters('sql-productionAdminLogin')]",
-        "administratorLoginPassword": "[parameters('sql-productionAdminLoginPassword')]"
+        "administratorLogin": "[parameters('sqlAdministratorLogin')]",
+        "administratorLoginPassword": "[parameters('sqlAdministratorLoginPassword')]"
       },
       "resources": [
+        {
+          "name": "[variables('databaseName')]",
+          "type": "databases",
+          "location": "[resourceGroup().location]",
+          "tags": {
+            "displayName": "db-security-monitor-production"
+          },
+          "apiVersion": "2014-04-01-preview",
+          "dependsOn": [
+            "[variables('sqlserverName')]"
+          ],
+          "properties": {
+            "edition": "Basic",
+            "collation": "SQL_Latin1_General_CP1_CI_AS",
+            "maxSizeBytes": "1073741824",
+            "requestedServiceObjectiveName": "Basic"
+          }
+        },
         {
           "name": "AllowAllWindowsAzureIps",
           "type": "firewallrules",
           "location": "[resourceGroup().location]",
           "apiVersion": "2014-04-01-preview",
           "dependsOn": [
-            "[resourceId('Microsoft.Sql/servers', variables('sql-productionName'))]"
+            "[resourceId('Microsoft.Sql/servers', variables('sqlserverName'))]"
           ],
           "properties": {
             "startIpAddress": "0.0.0.0",
             "endIpAddress": "0.0.0.0"
           }
-        },
+        }
+      ]
+    },
+    {
+      "apiVersion": "2016-03-01",
+      "name": "[variables('hostingPlanName')]",
+      "type": "Microsoft.Web/serverfarms",
+      "location": "[resourceGroup().location]",
+      "tags": {
+        "displayName": "SecurityMonitorAppServicePlan"
+      },
+      "sku": {
+        "name": "[parameters('skuName')]",
+        "capacity": "[parameters('skuCapacity')]"
+      },
+      "properties": {
+        "name": "[variables('hostingPlanName')]"
+      }
+    },
+    {
+      "apiVersion": "2016-03-01",
+      "name": "[variables('webSiteName')]",
+      "type": "Microsoft.Web/sites",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[variables('hostingPlanName')]"
+      ],
+      "tags": {
+        "[concat('hidden-related:', resourceId('Microsoft.Web/serverfarms', variables('hostingPlanName')))]": "empty",
+        "displayName": "SecurityMonitorWeb"
+      },
+      "properties": {
+        "name": "[variables('webSiteName')]",
+        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('hostingPlanName'))]"
+      },
+      "resources": [
         {
-          "name": "[parameters('db-security-monitor-productionName')]",
-          "type": "databases",
-          "location": "[resourceGroup().location]",
-          "apiVersion": "2014-04-01-preview",
+          "apiVersion": "2016-03-01",
+          "type": "config",
+          "name": "connectionstrings",
           "dependsOn": [
-            "[resourceId('Microsoft.Sql/servers', variables('sql-productionName'))]"
+            "[variables('webSiteName')]"
           ],
-          "tags": {
-            "displayName": "db-security-monitor-production"
-          },
           "properties": {
-            "collation": "[parameters('db-security-monitor-productionCollation')]",
-            "edition": "[parameters('db-security-monitor-productionEdition')]",
-            "maxSizeBytes": "1073741824",
-            "requestedServiceObjectiveName": "[parameters('db-security-monitor-productionRequestedServiceObjectiveName')]"
+            "DefaultConnection": {
+              "value": "[concat('Data Source=tcp:', reference(concat('Microsoft.Sql/servers/', variables('sqlserverName'))).fullyQualifiedDomainName, ',1433;Initial Catalog=', variables('databaseName'), ';User Id=', parameters('sqlAdministratorLogin'), '@', reference(concat('Microsoft.Sql/servers/', variables('sqlserverName'))).fullyQualifiedDomainName, ';Password=', parameters('sqlAdministratorLoginPassword'), ';')]",
+              "type": "SQLAzure"
+            }
           }
         }
       ]
     },
     {
-      "name": "[variables('app-security-monitor-api-productionName')]",
+      "apiVersion": "2016-03-01",
+      "name": "[variables('apiSiteName')]",
       "type": "Microsoft.Web/sites",
       "location": "[resourceGroup().location]",
-      "apiVersion": "2015-08-01",
       "dependsOn": [
-        "[resourceId('Microsoft.Web/serverfarms', parameters('app-security-monitor-production-aspName'))]"
+        "[variables('hostingPlanName')]"
       ],
       "tags": {
-        "[concat('hidden-related:', resourceId('Microsoft.Web/serverfarms', parameters('app-security-monitor-production-aspName')))]": "Resource",
-        "displayName": "app-security-monitor-api-production"
+        "[concat('hidden-related:', resourceId('Microsoft.Web/serverfarms', variables('hostingPlanName')))]": "empty",
+        "displayName": "SecurityMonitorApi"
       },
       "properties": {
-        "name": "[variables('app-security-monitor-api-productionName')]",
-        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('app-security-monitor-production-aspName'))]"
+        "name": "[variables('apiSiteName')]",
+        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('hostingPlanName'))]"
       },
       "resources": [
         {
-          "name": "appsettings",
+          "apiVersion": "2016-03-01",
           "type": "config",
-          "apiVersion": "2015-08-01",
+          "name": "connectionstrings",
           "dependsOn": [
-            "[resourceId('Microsoft.Web/sites', variables('app-security-monitor-api-productionName'))]"
+            "[variables('apiSiteName')]"
           ],
-          "tags": {
-            "displayName": "app-security-monitor-api-production-application-settings"
-          },
           "properties": {
-            "key1": "value1",
-            "key2": "value2"
-          },
-          "connectionStrings": [
-            {
-              "name": "Default",
-              "value": "[parameters('app-security-monitor-production-connectionString')]",
+            "DefaultConnection": {
+              "value": "[concat('Data Source=tcp:', reference(concat('Microsoft.Sql/servers/', variables('sqlserverName'))).fullyQualifiedDomainName, ',1433;Initial Catalog=', variables('databaseName'), ';User Id=', parameters('sqlAdministratorLogin'), '@', reference(concat('Microsoft.Sql/servers/', variables('sqlserverName'))).fullyQualifiedDomainName, ';Password=', parameters('sqlAdministratorLoginPassword'), ';')]",
               "type": "SQLAzure"
             }
-          ]
+          }
         }
       ]
-    }],
-  "outputs": {}
+    }
+  ],
+  "outputs": {
+    "webSiteUri": {
+      "type": "string",
+      "value": "[reference(concat('Microsoft.Web/sites/', variables('webSiteName'))).hostnames[0]]"
+    },
+    "apiSiteUri": {
+      "type": "string",
+      "value": "[reference(concat('Microsoft.Web/sites/', variables('apiSiteName'))).hostnames[0]]"
+    },
+    "sqlSvrFqdn": {
+      "type": "string",
+      "value": "[reference(concat('Microsoft.Sql/servers/', variables('sqlserverName'))).fullyQualifiedDomainName]"
+    }
+  }
 }
