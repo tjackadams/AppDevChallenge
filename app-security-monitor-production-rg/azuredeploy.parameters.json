@@ -3,7 +3,10 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "sqlAdministratorLogin": {
-      "value": "tjackadams"
+      "value": "default"
+    },
+    "sqlAdministratorLoginPassword": {
+      "value": "default"
     }
   }
 }
