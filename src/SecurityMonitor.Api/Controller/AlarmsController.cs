@@ -11,7 +11,7 @@ namespace SecurityMonitor.Api
     [Produces("application/json")]
     [Route("api/[controller]")]
     [ApiController]
-    public class AlarmsController : Controller
+    public class AlarmsController : ControllerBase
     {
         private readonly IMapper _mapper;
         private readonly IAlarmRepository _alarmRepository;

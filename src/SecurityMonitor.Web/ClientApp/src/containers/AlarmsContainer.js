@@ -15,14 +15,6 @@ const AlarmsContainer = () => {
     };
 
     fetchData();
-
-    const poll = setInterval(() => {
-      fetchData();
-    }, 5000);
-
-    return () => {
-      clearInterval(poll);
-    };
   }, []);
 
   if (data.length === 0) {

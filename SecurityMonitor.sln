@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.572
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28803.156
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SecurityMonitor.Web", "src\SecurityMonitor.Web\SecurityMonitor.Web.csproj", "{FB902851-8728-4DEE-9328-C10AD002149B}"
 EndProject
@@ -16,6 +16,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SecurityMonitor.Api", "src\SecurityMonitor.Api\SecurityMonitor.Api.csproj", "{6FA4C726-195D-487F-8AD7-A2E689E2752D}"
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "SecurityMonitor.Database", "src\SecurityMonitor.Database\SecurityMonitor.Database.sqlproj", "{8A08CA3D-D155-44CF-B4AC-79093403BEEE}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SecurityMonitor.Simulator", "src\SecurityMonitor.Simulator\SecurityMonitor.Simulator.csproj", "{60761E9B-C55E-4B26-A13D-1500EFAF7C9F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -49,6 +51,10 @@ Global
 		{8A08CA3D-D155-44CF-B4AC-79093403BEEE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8A08CA3D-D155-44CF-B4AC-79093403BEEE}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8A08CA3D-D155-44CF-B4AC-79093403BEEE}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{60761E9B-C55E-4B26-A13D-1500EFAF7C9F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{60761E9B-C55E-4B26-A13D-1500EFAF7C9F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{60761E9B-C55E-4B26-A13D-1500EFAF7C9F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{60761E9B-C55E-4B26-A13D-1500EFAF7C9F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -59,6 +65,7 @@ Global
 		{697B53A2-E385-4E14-AEB9-79A7C81B2AEC} = {388B4B33-D553-447D-A0C2-AB94C473D12F}
 		{6FA4C726-195D-487F-8AD7-A2E689E2752D} = {388B4B33-D553-447D-A0C2-AB94C473D12F}
 		{8A08CA3D-D155-44CF-B4AC-79093403BEEE} = {388B4B33-D553-447D-A0C2-AB94C473D12F}
+		{60761E9B-C55E-4B26-A13D-1500EFAF7C9F} = {388B4B33-D553-447D-A0C2-AB94C473D12F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3166793D-B696-4B04-9ECE-2CC2E5A0375C}

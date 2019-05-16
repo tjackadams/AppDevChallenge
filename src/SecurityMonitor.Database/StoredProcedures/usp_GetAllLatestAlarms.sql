@@ -1,5 +1,6 @@
 ﻿CREATE PROCEDURE [dbo].[usp_GetAllLatestAlarms]
 AS
+SET NOCOUNT ON;
 	;WITH SortedDeviceEvents AS
 	(
 		SELECT

@@ -7,7 +7,7 @@ namespace SecurityMonitor.Core.Models
     {
         private DeviceEvent(){}
 
-        public static DeviceEvent New(int deviceId, Guid id, DateTime eventTime, Status status)
+        public static DeviceEvent New(int deviceId, Guid id, DateTimeOffset eventTime, Status status)
         {
             return new DeviceEvent
             {

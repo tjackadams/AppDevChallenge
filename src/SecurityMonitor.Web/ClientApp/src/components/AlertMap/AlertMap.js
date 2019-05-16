@@ -35,17 +35,12 @@ class AlertMap extends Component {
       lat: 51.505,
       lng: -1
     },
-    vMapPins: []
+    vMapPins: this.props.data
   };
 
   componentDidMount() {
-    this.getMapData();
-  }
-
-  getMapData = () => {
-    setTimeout(this.getMapData, 30000);
     this.updateMap(this.props.data);
-  };
+  }
 
   displayPin = (vDeviceId, vName, vLong, vLat, vText, vStatus, vImage) => {
     const random = Math.random();

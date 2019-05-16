@@ -7,7 +7,7 @@ namespace SecurityMonitor.Core.Models
     {
         private Device() { }
 
-        public static Device New(int id, string name, double lat, double lng)
+        public static Device New(int id, string name, decimal lat, decimal lng)
         {
             if (string.IsNullOrEmpty(name)) throw new ArgumentNullException(nameof(name), "Device name must be supplied.");
 
@@ -23,8 +23,8 @@ namespace SecurityMonitor.Core.Models
 
         public int Id { get; private set; }
         public string Name { get; private set; }
-        public double Latitude { get; private set; }
-        public double Longitude { get; private set; }
+        public decimal Latitude { get; private set; }
+        public decimal Longitude { get; private set; }
         public string ImageUrl { get; private set; }
     }
 }

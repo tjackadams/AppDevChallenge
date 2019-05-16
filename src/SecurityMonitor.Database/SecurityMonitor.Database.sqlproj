@@ -63,6 +63,7 @@
     <Build Include="Tables\DeviceEvents.sql" />
     <Build Include="Tables\Devices.sql" />
     <Build Include="StoredProcedures\usp_GetAllLatestAlarms.sql" />
+    <Build Include="StoredProcedures\usp_InsertOrUpdateDevice.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="SecurityMonitor.Database.refactorlog" />
@@ -70,6 +71,8 @@
   <ItemGroup>
     <None Include="SecurityMonitor.Database.publish.xml" />
     <None Include="Local.SecurityMonitor.Database.publish.xml" />
+    <Build Include="StoredProcedures\usp_InsertDeviceEvent.sql" />
+    <None Include="SecurityMonitor.Database.localhost.publish.xml" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Scripts.PostDeployment.sql" />
