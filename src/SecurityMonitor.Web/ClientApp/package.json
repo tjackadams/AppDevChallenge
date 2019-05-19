@@ -5,35 +5,35 @@
   "dependencies": {
     "@aspnet/signalr": "^1.1.4",
     "axios": "^0.18.0",
-    "leaflet": "^1.4.0",
-    "office-ui-fabric-react": "^6.164.2",
+    "classnames": "^2.2.6",
+    "leaflet": "^1.5.1",
+    "office-ui-fabric-react": "^6.182.1",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
     "react-error-boundary": "^1.2.5",
-    "react-leaflet": "^2.2.1",
+    "react-leaflet": "^2.3.0",
     "react-redux": "^7.0.3",
-    "react-router-dom": "^4.2.2",
-    "react-scripts": "^1.1.5",
+    "react-router-dom": "^5.0.0",
+    "react-scripts": "^3.0.1",
     "redux": "^4.0.1",
     "redux-logger": "^3.0.6",
     "rimraf": "^2.6.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.4.3",
-    "@storybook/addon-actions": "^5.0.6",
-    "@storybook/addon-links": "^5.0.6",
-    "@storybook/addons": "^5.0.6",
-    "@storybook/react": "^5.0.6",
+    "@babel/core": "^7.4.4",
+    "@storybook/addon-actions": "^5.0.11",
+    "@storybook/addon-links": "^5.0.11",
+    "@storybook/addons": "^5.0.11",
+    "@storybook/react": "^5.0.11",
     "ajv": "^6.0.0",
-    "babel-eslint": "^7.2.3",
-    "babel-loader": "^8.0.5",
+    "babel-eslint": "^10.0.1",
     "cross-env": "^5.2.0",
-    "eslint": "^4.1.1",
-    "eslint-config-react-app": "^2.1.0",
-    "eslint-plugin-flowtype": "^2.50.3",
-    "eslint-plugin-import": "^2.14.0",
-    "eslint-plugin-jsx-a11y": "^5.1.1",
-    "eslint-plugin-react": "^7.11.1"
+    "eslint": "^5.16.0",
+    "eslint-config-react-app": "^4.0.1",
+    "eslint-plugin-flowtype": "^3.9.0",
+    "eslint-plugin-import": "^2.17.2",
+    "eslint-plugin-jsx-a11y": "^6.2.1",
+    "eslint-plugin-react": "^7.13.0"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -46,5 +46,17 @@
     "lint": "eslint ./src/",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }
