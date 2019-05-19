@@ -64,6 +64,7 @@
     <Build Include="Tables\Devices.sql" />
     <Build Include="StoredProcedures\usp_GetAllLatestAlarms.sql" />
     <Build Include="StoredProcedures\usp_InsertOrUpdateDevice.sql" />
+    <Build Include="StoredProcedures\usp_GetAllDevices.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="SecurityMonitor.Database.refactorlog" />

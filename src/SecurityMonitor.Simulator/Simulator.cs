@@ -51,7 +51,7 @@ namespace SecurityMonitor.Simulator
 
                 try
                 {              
-                    await _mediator.Send(new CreateOrUpdateCommand.Request
+                    await _mediator.Send(new CreateOrUpdateDeviceCommand.Request
                     {
                         Id = device.Id,
                         Latitude = device.Latitude,

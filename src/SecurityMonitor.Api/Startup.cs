@@ -11,10 +11,7 @@ using SecurityMonitor.Data.Repository;
 using SecurityMonitor.Simulator;
 using StructureMap;
 using StructureMap.Pipeline;
-using Swashbuckle.AspNetCore.Swagger;
 using System;
-using System.IO;
-using System.Reflection;
 
 namespace SecurityMonitor.Api
 {
@@ -31,15 +28,21 @@ namespace SecurityMonitor.Api
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
-            services
-                .AddCors();
+            services.AddCors(options => options.AddPolicy("CorsPolicy",
+                        builder =>
+                        {
+                            builder.AllowAnyHeader()
+                                   .AllowAnyMethod()
+                                   .SetIsOriginAllowed((host) => true)
+                                   .AllowCredentials();
+                        }));
 
             services
-                .AddAutoMapper(typeof(Startup));
+                .AddAutoMapper(typeof(Startup), typeof(Device));
 
             services
                 .AddMvc()
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             services
                 .AddDistributedMemoryCache();
@@ -53,20 +56,14 @@ namespace SecurityMonitor.Api
 
             services.AddMediatR(typeof(Startup), typeof(Device));
 
-            services.AddSignalR();
+            services.AddSignalR(o =>
+            {
+                o.EnableDetailedErrors = true;
+            });
 
             container.Populate(services);
 
-            //services
-            //    .AddSwaggerGen(c =>
-            //{
-            //    c.SwaggerDoc("v1", new Info { Title = "Security Monitor API", Version = "v1" });
-
-            //    var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-            //    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-            //    c.IncludeXmlComments(xmlPath);
-            //});
-
+            // TODO: Needs to be a background job
             var simulator = container.GetInstance<ISimulator>();
 
             simulator.Simulate();
@@ -75,38 +72,22 @@ namespace SecurityMonitor.Api
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IMapper mapper)
         {
             if (env.IsDevelopment())
             {
+                mapper.ConfigurationProvider.AssertConfigurationIsValid();
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseCors(options =>
-            {
-                options
-                .AllowAnyOrigin()
-                .AllowAnyHeader()
-                .AllowAnyMethod();
-            });
-
-            //app
-            //    .UseSwagger();
-
-
-            //app
-            //    .UseSwaggerUI(c =>
-            //{
-            //    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Security Monitor API V1");
-            //    c.RoutePrefix = string.Empty;
-            //});
+            app.UseCors("CorsPolicy");
 
             app
                 .UseMvc();
 
             app.UseSignalR(routes =>
             {
-                routes.MapHub<AlarmClientHub>("/alarms");
+                routes.MapHub<NotificationClientHub>("/hub/notifications");
             });
         }
     }

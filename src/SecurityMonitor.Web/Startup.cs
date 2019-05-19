@@ -16,11 +16,22 @@ namespace SecurityMonitor.Web
 
         public IConfiguration Configuration { get; }
 
-        
-
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services
+    .AddCors(o =>
+    {
+        o.AddPolicy("Policy", builder =>
+        {
+            builder.AllowAnyHeader();
+            builder.AllowAnyMethod();
+            builder.AllowAnyOrigin();
+            builder.AllowCredentials();
+            builder.WithOrigins("http://localhost:51151/");
+        });
+    });
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             // In production, the React files will be served from this directory
@@ -42,7 +53,7 @@ namespace SecurityMonitor.Web
                 app.UseExceptionHandler("/Error");
             }
 
-            
+            app.UseCors("Policy");
 
             app.UseStaticFiles();
             app.UseSpaStaticFiles();

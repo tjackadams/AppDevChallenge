@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using SecurityMonitor.Core.Models.Devices.Events;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace SecurityMonitor.Core.Models.Devices
 {
-    public class CreateOrUpdateCommand
+    public class CreateOrUpdateDeviceCommand
     {
         public class Request : IRequest
         {
@@ -19,9 +20,11 @@ namespace SecurityMonitor.Core.Models.Devices
 
         public class Handler : IRequestHandler<Request>
         {
+            private readonly IMediator _mediator;
             private readonly IDeviceRepository _deviceRepository;
-            public Handler(IDeviceRepository deviceRepository)
+            public Handler(IMediator mediator, IDeviceRepository deviceRepository)
             {
+                _mediator = mediator;
                 _deviceRepository = deviceRepository;
             }
             public async Task<Unit> Handle(Request request, CancellationToken cancellationToken)
@@ -31,6 +34,14 @@ namespace SecurityMonitor.Core.Models.Devices
                     request.Name,
                     request.Latitude,
                     request.Longitude);
+
+                await _mediator.Publish(new DeviceUpdatedEvent
+                {
+                    DeviceId = request.Id,
+                    Name = request.Name,
+                    Latitude = request.Latitude,
+                    Longitude = request.Longitude
+                });
                 
                 return Unit.Value;
             }

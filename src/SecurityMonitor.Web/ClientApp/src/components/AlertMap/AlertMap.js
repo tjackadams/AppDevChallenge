@@ -35,43 +35,49 @@ class AlertMap extends Component {
       lat: 51.505,
       lng: -1
     },
-    vMapPins: this.props.data
+    vMapPins: []
   };
 
   componentDidMount() {
     this.updateMap(this.props.data);
   }
 
-  displayPin = (vDeviceId, vName, vLong, vLat, vText, vStatus, vImage) => {
-    const random = Math.random();
-    const icon = random > 0.8 ? RedIcon : random > 0.5 ? AmberIcon : GreenIcon;
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.data !== this.props.data) {
+      this.updateMap(this.props.data);
+    }
+  }
+
+  displayPin = (vDeviceId, vName, vLong, vLat, vStatus) => {
+    const icon =
+      vStatus === 2 ? RedIcon : vStatus === 1 ? AmberIcon : GreenIcon;
     return {
       key: vDeviceId,
       icon: icon,
       name: vName,
       position: [vLat, vLong],
-      text: vText
+      text: "test"
     };
   };
 
   updateMap = Pins => {
-    let vPins = [];
-    Pins.forEach(pin => {
-      vPins[pin.deviceId] = this.displayPin(
+    const displayPins = Object.values(Pins).map(pin => {
+      return this.displayPin(
         pin.deviceId,
         pin.name,
-        pin.long,
-        pin.lat,
-        pin.text
+        pin.longitude,
+        pin.latitude,
+        pin.status
       );
     });
 
     this.setState({
-      vMapPins: vPins
+      vMapPins: displayPins
     });
   };
 
   render() {
+    console.log("pins", this.state.vPins);
     const position = [this.state.center.lat, this.state.center.lng];
     return (
       <LeafletMap
@@ -96,7 +102,6 @@ class AlertMap extends Component {
           subscriptionKey={this.props.subscriptionKey}
         />
         {this.state.vMapPins.map(pin => {
-          console.log("pin", pin);
           return (
             <Marker key={pin.key} position={pin.position} icon={pin.icon}>
               <Popup>
